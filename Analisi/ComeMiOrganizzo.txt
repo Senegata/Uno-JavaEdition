@@ -1,0 +1,28 @@
+GIOCO DI UNO
+Deve permettere di giocare a uno.
+
+CARTA
+Faccio una classe astratta dove
+definisco le proprietà delle carte.
+N Red
+N Yellow
+N Blue
+N Green
+
+FATTO
+LOGICA CARTE
+Le carte devono essere ben definite in
+una lista Mazzo.
+Poi saranno mischiate e il mazzo sarà pronto per
+la distribuzione.
+Poi saranno distribuite nelle due Mani(liste)
+dei due avversari.
+FATTO
+
+TAVOLO
+Le carte si potranno inserire in una lista che
+sarà il tavolo.
+Tramite delle operazioni logiche,
+sceglierò quali carte si potranno buttare a
+terra basandomi sulla carta che abbiamo giù.
+
