@@ -1,6 +1,6 @@
-package Table;
+package FrancescoAPepe.UnoJavaVersion.Table;
 
-import Carte.Carta;
+import FrancescoAPepe.UnoJavaVersion.Carte.Carta;
 
 public class Table {
 

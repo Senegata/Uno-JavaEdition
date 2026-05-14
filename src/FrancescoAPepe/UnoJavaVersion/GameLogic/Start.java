@@ -1,9 +1,8 @@
-package GameLogic;
+package FrancescoAPepe.UnoJavaVersion.GameLogic;
 
-import Carte.Carta;
-import Carte.Mazzo;
-import Players.Hands;
-import Table.Table;
+import FrancescoAPepe.UnoJavaVersion.Carte.Mazzo;
+import FrancescoAPepe.UnoJavaVersion.Players.Hands;
+import FrancescoAPepe.UnoJavaVersion.Table.Table;
 
 import java.util.Scanner;
 

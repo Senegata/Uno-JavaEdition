@@ -1,6 +1,6 @@
-package GameLogic;
+package FrancescoAPepe.UnoJavaVersion.GameLogic;
 
-import Carte.Carta;
+import FrancescoAPepe.UnoJavaVersion.Carte.Carta;
 
 public class Table {
 

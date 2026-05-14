@@ -1,4 +1,4 @@
-package Carte;
+package FrancescoAPepe.UnoJavaVersion.Carte;
                     // CREAZIONE PROP CARTE
 public class Carta {
     private String colore;
