@@ -1,9 +1,10 @@
-package GameLogic;
+package FrancescoAPepe.UnoJavaVersion.GameLogic;
 
-import Carte.Carta;
-import Carte.Mazzo;
-import Players.Hands;
-import Table.Table;
+import FrancescoAPepe.UnoJavaVersion.Carte.Carta;
+import FrancescoAPepe.UnoJavaVersion.Carte.Mazzo;
+import FrancescoAPepe.UnoJavaVersion.Players.CardRenderer;
+import FrancescoAPepe.UnoJavaVersion.Players.Hands;
+import FrancescoAPepe.UnoJavaVersion.Table.Table;
 
 import java.util.Scanner;
 
@@ -13,12 +14,15 @@ public class Actions {
     private Table table;
     private Mazzo mazzo;
     private Scanner scanner = new Scanner(System.in);
+    private CardRenderer renderer = new CardRenderer();
+
 
     public Actions(Hands hands, Table table, Mazzo mazzo) {
         this.hands = hands;
         this.table = table;
         this.mazzo = mazzo;
     }
+
     public void startGameLoopSinglePlayer() {
 
         while (true) {
@@ -75,9 +79,11 @@ public class Actions {
 
         while (true) {
 
-            System.out.println("Card on the table: " + table.getCartaSulTavolo());
+            String[] rendered = renderer.renderCard(table.getCartaSulTavolo());
+            for (String r : rendered) System.out.println(r);
+
             System.out.println("----------------------------");
-            hands.stampaManoGiocatore1Numerata();
+            hands.stampaManoGiocatore1Orizzontale();
 
             System.out.print("Choose a card to play(0 to draw): ");
 
@@ -111,7 +117,7 @@ public class Actions {
                 System.out.println("Player 1 played: " + cartaScelta);
                 break; // esce dal turno
             } else {
-                System.out.println("❌ You can't plat that card! Try again");
+                System.out.println("❌ You can't play that card! Try again");
             }
         }
     }
@@ -125,9 +131,10 @@ public class Actions {
 
         while (true) {
 
-            System.out.println("Card on the table: " + table.getCartaSulTavolo());
+            String[] rendered = renderer.renderCard(table.getCartaSulTavolo());
+            for (String r : rendered) System.out.println(r);
             System.out.println("----------------------------");
-            hands.stampaManoGiocatore2Numerata();
+            hands.stampaManoGiocatore2Orizzontale();
 
             System.out.print("Player 2, choose a card to play (0 to draw): ");
 
@@ -171,7 +178,7 @@ public class Actions {
         System.out.println("\n=== AI TURN ===");
         System.out.println("Card on the table: " + table.getCartaSulTavolo());
         System.out.println("----------------------------");
-        hands.stampaManoGiocatore2Numerata();
+        hands.stampaManoGiocatore2Orizzontale();
 
         // 1. Cerca una carta valida
         for (int i = 0; i < hands.getManoGiocatore2().size(); i++) {
@@ -189,7 +196,6 @@ public class Actions {
         System.out.println("AI cannot play. Drawing a card...");
         pescaCartaGiocatore2();
     }
-
 
 
     // -------------------------
@@ -233,6 +239,7 @@ public class Actions {
 
         System.out.println("Player 2 drew: " + pescata);
     }
+
     private void printWinner(int player) {
 
         String reset = "\u001B[0m";

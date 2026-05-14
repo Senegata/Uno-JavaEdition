@@ -5,6 +5,7 @@ Play in **Single Player mode** against a simple AI or in **Two Player mode** loc
 Match colors or numbers, draw cards, and try to empty your hand before your opponent.
 
 ## 🎮 Features
+
 - Single Player (vs AI)
 - Two Player local mode
 - Turn-based gameplay
@@ -14,5 +15,6 @@ Match colors or numbers, draw cards, and try to empty your hand before your oppo
 - Clean and modular Java structure
 
 ## 🚀 How to Run
+
 Compile and run the project from your IDE or terminal:
 

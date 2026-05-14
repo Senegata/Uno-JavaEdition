@@ -1,9 +1,8 @@
-package GameLogic;
+package FrancescoAPepe.UnoJavaVersion.GameLogic;
 
-import Carte.Carta;
-import Carte.Mazzo;
-import Players.Hands;
-import Table.Table;
+import FrancescoAPepe.UnoJavaVersion.Carte.Mazzo;
+import FrancescoAPepe.UnoJavaVersion.Players.Hands;
+import FrancescoAPepe.UnoJavaVersion.Table.Table;
 
 import java.util.Scanner;
 
@@ -27,6 +26,7 @@ public class Start {
             System.out.println("Invalid choice!");
         }
     }
+
     private void startSinglePlayerGame() {
 
         Mazzo m = new Mazzo();
@@ -41,6 +41,7 @@ public class Start {
         Actions actions = new Actions(h, t, m);
         actions.startGameLoopSinglePlayer();
     }
+
     private void startTwoPlayerGame() {
 
         Mazzo m = new Mazzo();
@@ -74,7 +75,7 @@ public class Start {
                 " ╚═════╝ ╚═╝  ╚═══╝ ╚═════╝ " + reset);
 
         System.out.println();
-        System.out.println(yellow + "Welcome to the UNO Java Edition!" + reset);
+        System.out.println(yellow + "Welcome to the UNO Java Edition!" + red + " by Francesco Alessandro Pepe" + reset);
         System.out.println(blue + "Match colors, match numbers, and outsmart your opponent." + reset);
         System.out.println(green + "Let the chaos begin!" + reset);
         System.out.println();

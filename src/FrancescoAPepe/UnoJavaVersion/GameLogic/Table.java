@@ -1,6 +1,6 @@
-package GameLogic;
+package FrancescoAPepe.UnoJavaVersion.GameLogic;
 
-import Carte.Carta;
+import FrancescoAPepe.UnoJavaVersion.Carte.Carta;
 
 public class Table {
 
@@ -13,6 +13,7 @@ public class Table {
     public Carta getCartaSulTavolo() {
         return cartaSulTavolo;
     }
+
     public boolean puoEssereGiocata(Carta carta) {
         if (cartaSulTavolo == null) {
             return true; // prima carta sempre giocabile
