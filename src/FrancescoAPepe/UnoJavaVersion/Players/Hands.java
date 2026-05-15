@@ -4,7 +4,9 @@ import FrancescoAPepe.UnoJavaVersion.Carte.Carta;
 import FrancescoAPepe.UnoJavaVersion.Carte.Mazzo;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 public class Hands {
 
@@ -135,7 +137,38 @@ public class Hands {
     public void aggiungiAlTavolo(Carta carta) {
         table.add(carta);
     }
+
+
+
+    // Implementazione del metodo per ordinare per colore (Generico e riutilizzabile)
+    private void ordinaManoPerColore(List<Carta> mano) {
+        Map<String, Integer> ordineColori = Map.of(
+                "Red", 1,
+                "Yellow", 2,
+                "Green", 3,
+                "Blue", 4
+        );
+
+
+        mano.sort(Comparator.comparing(
+                c -> ordineColori.getOrDefault(c.getColore(), 99) //    Se il colore non è riconosciuto, lo mettiamo alla fine
+        ));
+    }
+
+    //  Metodi specifici per ogni giocatore che chiamano il metodo generico
+    public void ordinaManoGiocatore1PerColore() {
+        ordinaManoPerColore(manoGiocatore1);
+    }
+
+    public void ordinaManoGiocatore2PerColore() {
+        ordinaManoPerColore(manoGiocatore2);
+    }
+
+
+
 }
+
+
 
 
 //----------------------
