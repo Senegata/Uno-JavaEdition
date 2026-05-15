@@ -41,7 +41,9 @@ public class Hands {
 
     public void stampaManoGiocatore1Orizzontale() {
 
-        System.out.println("Player 1 Hand:");
+        System.out.print("      PLAYER 1 HAND");
+        System.out.println("        ||        PLAYER 2 HAS: " + manoGiocatore2.size() + " CARDS");
+        System.out.println("");
 
         // 1) Stampa gli indici sopra le carte
         for (int i = 0; i < manoGiocatore1.size(); i++) {
@@ -68,8 +70,9 @@ public class Hands {
 
     public void stampaManoGiocatore2Orizzontale() {
 
-        System.out.println("Player 2 Hand:");
-
+        System.out.print("      PLAYER 2 HAND");
+        System.out.println("        ||        PLAYER 1 HAS: " + manoGiocatore1.size() + " CARDS");
+        System.out.println("");
         // 1) Stampa gli indici sopra le carte
         for (int i = 0; i < manoGiocatore2.size(); i++) {
             System.out.print("   (" + (i + 1) + ")      ");

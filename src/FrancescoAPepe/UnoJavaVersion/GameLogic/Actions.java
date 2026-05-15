@@ -6,6 +6,7 @@ import FrancescoAPepe.UnoJavaVersion.Players.CardRenderer;
 import FrancescoAPepe.UnoJavaVersion.Players.Hands;
 import FrancescoAPepe.UnoJavaVersion.Table.Table;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Actions {
@@ -16,13 +17,39 @@ public class Actions {
     private Scanner scanner = new Scanner(System.in);
     private CardRenderer renderer = new CardRenderer();
 
-
     public Actions(Hands hands, Table table, Mazzo mazzo) {
         this.hands = hands;
         this.table = table;
         this.mazzo = mazzo;
     }
 
+    // ---------------------------------------------------------
+    // RICOSTRUZIONE MAZZO QUANDO FINISCE
+    // ---------------------------------------------------------
+    private void ricostruisciMazzo() {
+
+        System.out.println("♻ Rebuilding deck from discard pile...");
+
+        List<Carta> scarti = table.getScarti();
+        Carta ultima = table.getCartaSulTavolo();
+
+        // Rimuovi l’ultima carta dagli scarti
+        scarti.remove(ultima);
+
+        // Rimetti tutte le altre carte nel mazzo
+        mazzo.addAll(scarti);
+
+        // Pulisci gli scarti e rimetti solo l’ultima carta
+        scarti.clear();
+        scarti.add(ultima);
+
+        // Mescola
+        mazzo.shuffle();
+    }
+
+    // ---------------------------------------------------------
+    // GAME LOOP SINGLE PLAYER
+    // ---------------------------------------------------------
     public void startGameLoopSinglePlayer() {
 
         while (true) {
@@ -34,7 +61,7 @@ public class Actions {
                 break;
             }
 
-            turnoAI(); // <-- IA al posto del giocatore 2
+            turnoAI();
 
             if (hands.getManoGiocatore2().isEmpty()) {
                 printWinner(2);
@@ -45,14 +72,15 @@ public class Actions {
         }
     }
 
-
+    // ---------------------------------------------------------
+    // GAME LOOP MULTIPLAYER
+    // ---------------------------------------------------------
     public void startGameLoopMultiplayer() {
 
         while (true) {
 
             turnoGiocatore1();
 
-            // VITTORIA GIOCATORE 1
             if (hands.getManoGiocatore1().isEmpty()) {
                 printWinner(1);
                 break;
@@ -60,7 +88,6 @@ public class Actions {
 
             turnoGiocatore2();
 
-            // VITTORIA GIOCATORE 2
             if (hands.getManoGiocatore2().isEmpty()) {
                 printWinner(2);
                 break;
@@ -70,24 +97,24 @@ public class Actions {
         }
     }
 
-    // -------------------------
+    // ---------------------------------------------------------
     // TURNO GIOCATORE 1
-    // -------------------------
+    // ---------------------------------------------------------
     private void turnoGiocatore1() {
 
         System.out.println("\n=== TURN PLAYER 1 ===");
+        System.out.println("\nTABLE");
 
         while (true) {
 
             String[] rendered = renderer.renderCard(table.getCartaSulTavolo());
             for (String r : rendered) System.out.println(r);
 
-            System.out.println("----------------------------");
+            System.out.println("");
             hands.stampaManoGiocatore1Orizzontale();
 
-            System.out.print("Choose a card to play(0 to draw): ");
+            System.out.print("Choose a card to play (0 to draw): ");
 
-            // --- INPUT SICURO ---
             String input = scanner.nextLine().trim();
 
             if (!input.matches("\\d+")) {
@@ -103,7 +130,6 @@ public class Actions {
                 break;
             }
 
-            // RANGE
             if (scelta < 0 || scelta >= hands.getManoGiocatore1().size()) {
                 System.out.println("Invalid choice! Try again.");
                 continue;
@@ -112,67 +138,77 @@ public class Actions {
             Carta cartaScelta = hands.getManoGiocatore1().get(scelta);
 
             if (puoGiocare(cartaScelta)) {
+
                 hands.giocaCartaGiocatore1(scelta);
+                table.aggiungiScarto(cartaScelta);
                 table.setCartaSulTavolo(cartaScelta);
+
                 System.out.println("Player 1 played: " + cartaScelta);
-                break; // esce dal turno
+                break;
+
             } else {
                 System.out.println("❌ You can't play that card! Try again");
             }
         }
     }
 
-    // -------------------------
+    // ---------------------------------------------------------
     // TURNO GIOCATORE 2
-    // -------------------------
+    // ---------------------------------------------------------
     private void turnoGiocatore2() {
 
         System.out.println("\n=== TURN PLAYER 2 ===");
+        System.out.println("\nTABLE");
 
         while (true) {
 
             String[] rendered = renderer.renderCard(table.getCartaSulTavolo());
             for (String r : rendered) System.out.println(r);
+
             System.out.println("----------------------------");
             hands.stampaManoGiocatore2Orizzontale();
 
             System.out.print("Player 2, choose a card to play (0 to draw): ");
 
-            // --- INPUT SICURO ---
             String input = scanner.nextLine().trim();
 
             if (!input.matches("\\d+")) {
-                System.out.println("Invalid choise! Try again");
+                System.out.println("Invalid choice! Try again");
                 continue;
             }
 
             int scelta = Integer.parseInt(input) - 1;
 
-            // PESCA
             if (scelta == -1) {
                 pescaCartaGiocatore2();
                 break;
             }
 
-            // RANGE
             if (scelta < 0 || scelta >= hands.getManoGiocatore2().size()) {
-                System.out.println("Invalid choise! Try again");
+                System.out.println("Invalid choice! Try again");
                 continue;
             }
 
             Carta cartaScelta = hands.getManoGiocatore2().get(scelta);
 
             if (puoGiocare(cartaScelta)) {
+
                 hands.giocaCartaGiocatore2(scelta);
+                table.aggiungiScarto(cartaScelta);
                 table.setCartaSulTavolo(cartaScelta);
-                System.out.println("Player 2 played " + cartaScelta);
+
+                System.out.println("Player 2 played: " + cartaScelta);
                 break;
+
             } else {
                 System.out.println("❌ You can't play this card. Try again");
             }
         }
     }
 
+    // ---------------------------------------------------------
+    // TURNO AI
+    // ---------------------------------------------------------
     private void turnoAI() {
 
         System.out.println("\n=== AI TURN ===");
@@ -180,28 +216,31 @@ public class Actions {
         System.out.println("----------------------------");
         hands.stampaManoGiocatore2Orizzontale();
 
-        // 1. Cerca una carta valida
         for (int i = 0; i < hands.getManoGiocatore2().size(); i++) {
+
             Carta carta = hands.getManoGiocatore2().get(i);
 
             if (puoGiocare(carta)) {
+
                 System.out.println("AI plays: " + carta);
+
                 hands.giocaCartaGiocatore2(i);
+                table.aggiungiScarto(carta);
                 table.setCartaSulTavolo(carta);
+
                 return;
             }
         }
 
-        // 2. Nessuna carta valida → pesca
         System.out.println("AI cannot play. Drawing a card...");
         pescaCartaGiocatore2();
     }
 
-
-    // -------------------------
-    // CONTROLLO VALIDITÀ CARTA
-    // -------------------------
+    // ---------------------------------------------------------
+    // CONTROLLO VALIDITÀ
+    // ---------------------------------------------------------
     private boolean puoGiocare(Carta carta) {
+
         Carta tavolo = table.getCartaSulTavolo();
 
         boolean stessoColore = carta.getColore().equals(tavolo.getColore());
@@ -210,13 +249,13 @@ public class Actions {
         return stessoColore || stessoNumero;
     }
 
-    // -------------------------
+    // ---------------------------------------------------------
     // PESCA G1
-    // -------------------------
+    // ---------------------------------------------------------
     private void pescaCartaGiocatore1() {
-        if (mazzo.getSize() == 0) {
-            System.out.println("The Deck is empty!");
-            return;
+
+        if (mazzo.isEmpty()) {
+            ricostruisciMazzo();
         }
 
         Carta pescata = mazzo.pescaCarta();
@@ -225,13 +264,13 @@ public class Actions {
         System.out.println("You drew: " + pescata);
     }
 
-    // -------------------------
+    // ---------------------------------------------------------
     // PESCA G2
-    // -------------------------
+    // ---------------------------------------------------------
     private void pescaCartaGiocatore2() {
-        if (mazzo.getSize() == 0) {
-            System.out.println("The deck is empty!");
-            return;
+
+        if (mazzo.isEmpty()) {
+            ricostruisciMazzo();
         }
 
         Carta pescata = mazzo.pescaCarta();
@@ -240,6 +279,9 @@ public class Actions {
         System.out.println("Player 2 drew: " + pescata);
     }
 
+    // ---------------------------------------------------------
+    // WINNER
+    // ---------------------------------------------------------
     private void printWinner(int player) {
 
         String reset = "\u001B[0m";
@@ -268,6 +310,4 @@ public class Actions {
         System.out.println("Thanks for playing UNO Java Edition!");
         System.out.println();
     }
-
 }
-

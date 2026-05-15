@@ -2,9 +2,13 @@ package FrancescoAPepe.UnoJavaVersion.Table;
 
 import FrancescoAPepe.UnoJavaVersion.Carte.Carta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Table {
 
     private Carta cartaSulTavolo;
+    private List<Carta> scarti = new ArrayList<>();
 
     public void setCartaSulTavolo(Carta carta) {
         this.cartaSulTavolo = carta;
@@ -26,5 +30,12 @@ public class Table {
             return true;
         }
         return false;
+    }
+    public void aggiungiScarto(Carta carta) {
+        scarti.add(carta);
+    }
+
+    public List<Carta> getScarti() {
+        return scarti;
     }
 }
