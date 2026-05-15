@@ -110,12 +110,20 @@ public class Actions {
             String[] rendered = renderer.renderCard(table.getCartaSulTavolo());
             for (String r : rendered) System.out.println(r);
 
-            System.out.println("");
+            System.out.println(" ");
             hands.stampaManoGiocatore1Orizzontale();
 
-            System.out.print("Choose a card to play (0 to draw): ");
+            System.out.print("Choose a card to play (0 to draw) or 'O' to sort by color: ");
 
             String input = scanner.nextLine().trim();
+
+            // --- NUOVO COMANDO: ORDINA PER COLORE ---
+            if (input.equalsIgnoreCase("O")) {
+                hands.ordinaManoGiocatore1PerColore();
+                System.out.println("\n🔄 Hand sorted by color!\n");
+                continue; // torna all'inizio del while
+            }
+// -----------------------------------------
 
             if (!input.matches("\\d+")) {
                 System.out.println("Invalid choice! Try again!");
@@ -168,9 +176,16 @@ public class Actions {
             System.out.println("----------------------------");
             hands.stampaManoGiocatore2Orizzontale();
 
-            System.out.print("Player 2, choose a card to play (0 to draw): ");
+            System.out.print("Choose a card to play (0 to draw) or 'O' to sort by color: ");
 
             String input = scanner.nextLine().trim();
+
+            // --- NUOVO COMANDO: ORDINA PER COLORE ---
+            if (input.equalsIgnoreCase("O")) {
+                hands.ordinaManoGiocatore2PerColore(); //   ordina la mano del giocatore per colore
+                System.out.println("\n🔄 Hand sorted by color!\n");
+                continue; // torna all'inizio del while
+            }
 
             if (!input.matches("\\d+")) {
                 System.out.println("Invalid choice! Try again");
